@@ -1,0 +1,18 @@
+#search {
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#images {
+   margin-top: 20px;
+   clear: both;
+ }
+
+#images img {
+  width: 100%;
+  height: 100%;
+  max-width: 640px;
+  max-height: 640px;
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+}
