@@ -1,5 +1,6 @@
 function InstagramQuery(username, tag, type, success) {
   this._checkIdx = 0;
+  this._limit = 500;
   this._userData;
   this._tagData;
   this._userId;
@@ -152,7 +153,7 @@ InstagramQuery.prototype = {
   },
 
   instagramTagUrl: function() {
-    return "https://api.instagram.com/v1/tags/" + this._tag + "/media/recent?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+    return "https://api.instagram.com/v1/tags/" + this._tag + "/media/recent?count=" + this._limit + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
   },
 
   instagramUserIdUrl: function() {
@@ -160,6 +161,6 @@ InstagramQuery.prototype = {
   },
 
   instagramUserFeedUrl: function() {
-    return "https://api.instagram.com/v1/users/" + this._userId + "/media/recent/?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+    return "https://api.instagram.com/v1/users/" + this._userId + "/media/recent/?count=" + this._limit + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
   }
 };
