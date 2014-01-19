@@ -1,10 +1,10 @@
-function InstagramQuery(username, tag, success) {
+function InstagramQuery(username, tag, type, success) {
   this.checkIdx = 0;
   this.userData;
   this.tagData;
   this.userId;
-  this.username = username || "mikekavouras";
-  this.tag = tag || "honeysmoon";
+  this.username = username || "wjhrdy";
+  this.tag = tag || "vscocam";
   this.hasPostsFilteredByTag = false;
   this.success = success;
   this.postsFilteredByTag;
@@ -14,14 +14,14 @@ function InstagramQuery(username, tag, success) {
 
 InstagramQuery.prototype = {
   fetchData: function() {
-    this.getUserId();
-    this.getFeedTag();
+    this.getUserFeed();
+    this.getTagFeed();
   },
 
   checkIfFetchIsDone: function() {
     if (this.checkIdx < 3) {
       return;
-    } 
+    }
 
     this.filterPostsByTag();
   },
@@ -56,9 +56,6 @@ InstagramQuery.prototype = {
       }
     }
 
-    userData = [];
-    tagData = [];
-
     var finalData = filteredUserData;
 
     // loop the the result of that stuff ^^^ and filter out duplicates
@@ -84,9 +81,15 @@ InstagramQuery.prototype = {
       this.success(this);
   },
 
-  getUserId: function(username) {
+  getUserFeed: function() {
     var self = this;
-    username = username || this.username;
+    var success = function() { self.getFeedForUser() };
+    this.getUserId(success);
+  },
+
+  getUserId: function(success) {
+    var self = this;
+    username = this.username;
     $.ajax({
       url: self.instagramUserIdUrl(),
       type: "get",
@@ -99,7 +102,10 @@ InstagramQuery.prototype = {
 
           self.checkIdx++;
           self.userId = id;
-          self.getUserFeed();
+
+          if (success) {
+            success();
+          }
         } else {
           alert ("No user found.");
         }
@@ -110,7 +116,7 @@ InstagramQuery.prototype = {
     })
   },
 
-  getUserFeed: function() {
+  getFeedForUser: function() {
     var self = this;
 
     $.ajax({
@@ -127,7 +133,7 @@ InstagramQuery.prototype = {
     })
   },
 
-  getFeedTag: function(tag) {
+  getTagFeed: function(tag) {
     tag = tag || this.tag;
     var self = this;
 
@@ -145,18 +151,15 @@ InstagramQuery.prototype = {
     })
   },
 
-  instagramTagUrl: function(tag) {
-    tag = tag || this.tag;
-    return "https://api.instagram.com/v1/tags/" + tag + "/media/recent?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+  instagramTagUrl: function() {
+    return "https://api.instagram.com/v1/tags/" + this.tag + "/media/recent?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
   },
 
-  instagramUserIdUrl: function(username) {
-    username = username || this.username;
-    return "https://api.instagram.com/v1/users/search?q=" + username + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
+  instagramUserIdUrl: function() {
+    return "https://api.instagram.com/v1/users/search?q=" + this.username + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
   },
 
-  instagramUserFeedUrl: function(userId) {
-    userId = this.userId || "767200";
-    return "https://api.instagram.com/v1/users/" + userId + "/media/recent/?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+  instagramUserFeedUrl: function() {
+    return "https://api.instagram.com/v1/users/" + this.userId + "/media/recent/?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
   }
 };
