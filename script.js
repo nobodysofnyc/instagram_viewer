@@ -7,8 +7,8 @@ $(document).ready(function() {
     var username = $('#username').val();
 
     var success = function(obj) {
-      for (var i = 0; i < obj.postsFilteredByTag.length; i++) {
-        var post = obj.postsFilteredByTag[i];
+      for (var i = 0; i < obj._postsFilteredByTag.length; i++) {
+        var post = obj._postsFilteredByTag[i];
         var src = post.images.standard_resolution.url;
         var img = $('<img class="insta-image" src="' + src + '">');
         $('#images').append(img);

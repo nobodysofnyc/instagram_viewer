@@ -1,13 +1,13 @@
 function InstagramQuery(username, tag, type, success) {
-  this.checkIdx = 0;
-  this.userData;
-  this.tagData;
-  this.userId;
-  this.username = username || "wjhrdy";
-  this.tag = tag || "vscocam";
-  this.hasPostsFilteredByTag = false;
-  this.success = success;
-  this.postsFilteredByTag;
+  this._checkIdx = 0;
+  this._userData;
+  this._tagData;
+  this._userId;
+  this._username = username || "wjhrdy";
+  this._tag = tag || "vscocam";
+  this._hasPostsFilteredByTag = false;
+  this._success = success;
+  this._postsFilteredByTag;
 
   this.fetchData();
 }
@@ -19,7 +19,7 @@ InstagramQuery.prototype = {
   },
 
   checkIfFetchIsDone: function() {
-    if (this.checkIdx < 3) {
+    if (this._checkIdx < 3) {
       return;
     }
 
@@ -27,18 +27,18 @@ InstagramQuery.prototype = {
   },
 
   filterPostsByTag: function() {
-    if (this.filteredData) {
-      return this.filteredData;
+    if (this._filteredData) {
+      return this._filteredData;
     }
 
     var filteredUserData = [];
 
-    for (var i = 0; i < this.userData.length; i++) {
-      var post = this.userData[i];
+    for (var i = 0; i < this._userData.length; i++) {
+      var post = this._userData[i];
       var tags = post.tags;
       if (tags.length > 0) {
         for (var j = 0; j < tags.length; j++) {
-          if (tags[j] == this.tag) {
+          if (tags[j] == this._tag) {
             filteredUserData.push (post);
             break;
           }
@@ -48,10 +48,10 @@ InstagramQuery.prototype = {
 
     var filteredTagData = [];
 
-    for (var i = 0; i < this.tagData.length; i++) {
-      var post = this.tagData[i];
+    for (var i = 0; i < this._tagData.length; i++) {
+      var post = this._tagData[i];
       var id = post.user.id;
-      if (id == this.userId) {
+      if (id == this._userId) {
         filteredTagData.push(post);
       }
     }
@@ -74,11 +74,11 @@ InstagramQuery.prototype = {
       }
     }
 
-    this.postsFilteredByTag = finalData;
-    this.hasPostsFilteredByTag = true;
+    this._postsFilteredByTag = finalData;
+    this._hasPostsFilteredByTag = true;
 
-    if (this.success)
-      this.success(this);
+    if (this._success)
+      this._success(this);
   },
 
   getUserFeed: function() {
@@ -89,7 +89,7 @@ InstagramQuery.prototype = {
 
   getUserId: function(success) {
     var self = this;
-    username = this.username;
+    username = this._username;
     $.ajax({
       url: self.instagramUserIdUrl(),
       type: "get",
@@ -100,8 +100,8 @@ InstagramQuery.prototype = {
           var user = data[0];
           var id = user.id;
 
-          self.checkIdx++;
-          self.userId = id;
+          self._checkIdx++;
+          self._userId = id;
 
           if (success) {
             success();
@@ -124,8 +124,8 @@ InstagramQuery.prototype = {
       type: "get",
       dataType: "jsonp",
       success: function(response) {
-        self.userData = response.data;
-        self.checkIdx++;
+        self._userData = response.data;
+        self._checkIdx++;
         self.checkIfFetchIsDone();
       },
       fail: function(response) {
@@ -134,7 +134,7 @@ InstagramQuery.prototype = {
   },
 
   getTagFeed: function(tag) {
-    tag = tag || this.tag;
+    tag = tag || this._tag;
     var self = this;
 
     $.ajax({
@@ -142,8 +142,8 @@ InstagramQuery.prototype = {
       type: "get",
       dataType: "jsonp",
       success: function(response) {
-        self.tagData = response.data;
-        self.checkIdx++;
+        self._tagData = response.data;
+        self._checkIdx++;
         self.checkIfFetchIsDone();
       },
       fail: function(response) {
@@ -152,14 +152,14 @@ InstagramQuery.prototype = {
   },
 
   instagramTagUrl: function() {
-    return "https://api.instagram.com/v1/tags/" + this.tag + "/media/recent?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+    return "https://api.instagram.com/v1/tags/" + this._tag + "/media/recent?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
   },
 
   instagramUserIdUrl: function() {
-    return "https://api.instagram.com/v1/users/search?q=" + this.username + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
+    return "https://api.instagram.com/v1/users/search?q=" + this._username + "&client_id=ac0ee52ebb154199bfabfb15b498c067";
   },
 
   instagramUserFeedUrl: function() {
-    return "https://api.instagram.com/v1/users/" + this.userId + "/media/recent/?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
+    return "https://api.instagram.com/v1/users/" + this._userId + "/media/recent/?count=500&client_id=ac0ee52ebb154199bfabfb15b498c067";
   }
 };
