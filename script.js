@@ -1,8 +1,19 @@
 $(document).ready(function() {
 
-  $('#tag').bind('keyup', function(){
-      var sanitized = $(this).val().replace(/[^0-1a-z]/g,'');
-      $(this).val('#' + sanitized);
+  $('#tag').bind('keydown', function(e) {
+    var val = $(this).val();
+    if (val.length == 1 && val == "#" && e.keyCode == 8) {
+      $(this).val('##');
+    }
+    if (val.length == 0) {
+      $(this).val('#');
+    }
+  });
+
+  $('#tag').bind('keyup', function() {
+    if ($(this).val().length === 0) {
+      $(this).val('#');
+    }
   });
 
   $('#submit').bind('click', function() {
