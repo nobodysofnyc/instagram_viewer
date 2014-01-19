@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+  $('#tag').bind('keyup', function(){
+      var sanitized = $(this).val().replace(/[^0-1a-z]/g,'');
+      $(this).val('#' + sanitized);
+  });
+
   $('#submit').bind('click', function() {
     $('#images').empty();
 
