@@ -45,26 +45,30 @@ InstagramQuery.prototype = {
 
     // filter tag posts by user_id = this._userId
     var filteredTagData = _.filter(this._tagData, function(post) {
-      console.log(post.user.id, self._userId);
       return post.user.id == self._userId;
     });
 
-    var finalData = filteredUserData;
+    var result = filteredUserData;
 
     for (var i = 0; i < filteredTagData.length; i++) {
+      var match = false;
       var tagId = filteredTagData[i].id;
-      var match = _.map(filteredUserData, function(post) {
-        return post.id == tagId;
-      });
-      if (_.contains(match, 'false')) {
-        finalData.push(filteredTagData[i]);
+      for (var j = 0; j < filteredUserData.length; j++) {
+        if (filteredUserData[j].id == tagId) {
+           match = true;
+           break;
+        }
+      }
+      if (!match) {
+        result.push(filteredTagData[i]);
       }
     }
 
-    this._postsFilteredByTag = finalData;
+    this._postsFilteredByTag = result;
 
     this._userData = [];
     this._tagData = [];
+
     if (this._success)
       this._success(this);
   },
