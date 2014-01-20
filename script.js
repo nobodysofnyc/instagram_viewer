@@ -2,7 +2,8 @@ function doThisWhenDone(obj) {
   for (var i = 0; i < obj._postsFilteredByTag.length; i++) {
     var post = obj._postsFilteredByTag[i];
     var src = post.images.standard_resolution.url;
-    var img = $('<img data-id="'+ post.id +'" class="insta-image" src="' + src + '">');
+    var tags = JSON.stringify(post.tags);
+    var img = $('<img data-id="'+ post.id +'" data-tags="'+ tags +'" class="insta-image" src="' + src + '">');
     $('#images').append(img);
   }
 }
