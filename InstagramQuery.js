@@ -34,6 +34,8 @@ InstagramQuery.prototype = {
 
     var filteredUserData = [];
 
+    console.log(this._tagData.length);
+
     for (var i = 0; i < this._userData.length; i++) {
       var post = this._userData[i];
       var tags = post.tags;
@@ -129,11 +131,11 @@ InstagramQuery.prototype = {
       dataType: "jsonp",
       success: function(response) {
         self._userData = self._userData.concat(response.data);
-        if (response.pagination.next_url) {
+        if (response.pagination.next_url && self._userData.length < self._limit) {
+          console.log('fetchin user...');
           self.getFeedForUser(response.pagination.next_url)
         } else {
           self._checkIdx++;
-          console.log('here');
           self.checkIfFetchIsDone();
         }
       },
@@ -151,7 +153,8 @@ InstagramQuery.prototype = {
       dataType: "jsonp",
       success: function(response) {
         self._tagData = self._tagData.concat(response.data);
-        if (response.pagination.next_url) {
+        if (response.pagination.next_url && self._tagData.length < self._limit) {
+          console.log('fetchin tag...');
           self.getTagFeed(response.pagination.next_url);
         } else {
           self._checkIdx++;
