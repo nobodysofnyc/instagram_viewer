@@ -1,26 +1,6 @@
 $(document).ready(function() {
-
-  $('#tag').bind('keydown', function(e) {
-    var $self = $(this);
-    var val = $self.val();
-    if (val.length == 1 && val == "#" && e.keyCode == 8) {
-      $self.val('##');
-    }
-    if (val.length == 0) {
-      $self.val('#');
-    }
-    if (val.charAt(0) !== "#") {
-      var newStr = "#" + val;
-      $self.val(newStr);
-    }
-  });
-
-  $('#tag').bind('keyup', function() {
-    var $self = $(this);
-    var val = $self.val();
-    if (val.length === 0) {
-      $(this).val('#');
-    }
+  $('#tag').bind('keyup', function(e) {
+    $(this).val("#" + $(this).val().replace(/#| /g, ''));
   });
 
   $('#submit').bind('click', function() {
