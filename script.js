@@ -20,8 +20,8 @@ $(document).ready(function() {
       }
     }
 
-    // new InstagramQuery(username, tag, type, success)
-    var query = new InstagramQuery(username, tag, "username|tag", success);
+    // new InstagramQuery(username, tag, limit, success)
+    var query = new InstagramQuery(username, tag, 100, success);
   });
 
   $(document).bind('keypress', function(e) {

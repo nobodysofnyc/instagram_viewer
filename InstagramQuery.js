@@ -1,8 +1,8 @@
-function InstagramQuery(username, tag, type, success) {
+function InstagramQuery(username, tag, limit, success) {
   this._checkIdx = 0;
-  this._limit = 500;
-  this._userData;
-  this._tagData;
+  this._limit = limit || 50;
+  this._userData = [];
+  this._tagData = [];
   this._userId;
   this._username = username || "wjhrdy";
   this._tag = tag || "vscocam";
@@ -34,11 +34,12 @@ InstagramQuery.prototype = {
 
     var filteredUserData = [];
 
+    console.log(this._userData.length);
     for (var i = 0; i < this._userData.length; i++) {
       var post = this._userData[i];
       var tags = post.tags;
       tags = tags.concat(this.getTagsFromPost(post));
-      tags = $.unique(tags);
+      tags = _.uniq(tags);
       if (tags.length > 0) {
         for (var j = 0; j < tags.length; j++) {
           if (tags[j] == this._tag) {
@@ -87,7 +88,7 @@ InstagramQuery.prototype = {
 
   getUserFeed: function() {
     var self = this;
-    var success = function() { self.getFeedForUser() };
+    var success = function(url) { self.getFeedForUser(url) };
     this.getUserId(success);
   },
 
@@ -103,12 +104,10 @@ InstagramQuery.prototype = {
         if (data.length > 0) {
           var user = data[0];
           var id = user.id;
-
           self._checkIdx++;
           self._userId = id;
-
           if (success) {
-            success();
+            success(self.instagramUserFeedUrl());
           }
         } else {
           alert ("No user found.");
@@ -120,17 +119,22 @@ InstagramQuery.prototype = {
     })
   },
 
-  getFeedForUser: function() {
+  getFeedForUser: function(url) {
     var self = this;
 
     $.ajax({
-      url: self.instagramUserFeedUrl(),
+      url: url,
       type: "get",
       dataType: "jsonp",
       success: function(response) {
-        self._userData = response.data;
-        self._checkIdx++;
-        self.checkIfFetchIsDone();
+        self._userData = self._userData.concat(response.data);
+        if (response.pagination.next_url) {
+          self.getFeedForUser(response.pagination.next_url)
+        } else {
+          self._checkIdx++;
+          console.log('here');
+          self.checkIfFetchIsDone();
+        }
       },
       fail: function(response) {
       }
