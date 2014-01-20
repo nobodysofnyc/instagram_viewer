@@ -1,6 +1,7 @@
 $(document).ready(function() {
   $('#tag').bind('keyup', function(e) {
-    if (e.keyCode === 91) return;
+    var k = e.keyCode;
+    if (k === 91 || k === 37 || k == 38 || k == 39 || k == 40) return;
     $(this).val("#" + $(this).val().replace(/#| /g, ''));
   });
 
@@ -14,7 +15,7 @@ $(document).ready(function() {
       for (var i = 0; i < obj._postsFilteredByTag.length; i++) {
         var post = obj._postsFilteredByTag[i];
         var src = post.images.standard_resolution.url;
-        var img = $('<img class="insta-image" src="' + src + '">');
+        var img = $('<img data-id="'+ post.id +'" class="insta-image" src="' + src + '">');
         $('#images').append(img);
       }
     }

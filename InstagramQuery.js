@@ -57,21 +57,22 @@ InstagramQuery.prototype = {
       }
     }
 
-    var finalData = filteredUserData;
+    var finalData = filteredUserData.slice(0);
 
     // loop the the result of that stuff ^^^ and filter out duplicates
 
     for (var i = 0; i < filteredTagData.length; i++) {
-      var tagPost = filteredTagData[i];
-      var tagPostId = tagPost.id;
+      var tagId = filteredTagData[i].id;
+      var match = false;
       for (var j = 0; j < filteredUserData.length; j++) {
-        var userPost = filteredUserData[j];
-        var userPostId = userPost.id;
-        if (userPostId == tagPostId) {
+        var userId = filteredUserData[j].id;
+        if (userId == tagId) {
+          match = true
           break;
-        } else {
-          finalData.push(tagPost);
         }
+      }
+      if (!match) {
+        finalData.push(filteredTagData[i]);
       }
     }
 
