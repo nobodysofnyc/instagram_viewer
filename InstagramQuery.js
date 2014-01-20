@@ -29,52 +29,34 @@ InstagramQuery.prototype = {
   },
 
   filterPostsByTag: function() {
+    var self = this;
+
     if (this._postsFilteredByTag.length) {
       return this._postsFilteredByTag;
     }
 
-    var filteredUserData = [];
-
-    for (var i = 0; i < this._userData.length; i++) {
-      var post = this._userData[i];
+    // filter user posts by tag == this._tag
+    var filteredUserData = _.filter(this._userData, function(post) {
       var tags = post.tags;
-      tags = tags.concat(this.extractCommentTagsFromPost(post));
+      tags = tags.concat(self.extractTagsFromCommentsInPost(post));
       tags = _.uniq(tags);
-      if (tags.length > 0) {
-        for (var j = 0; j < tags.length; j++) {
-          if (tags[j] == this._tag) {
-            filteredUserData.push (post);
-            break;
-          }
-        }
-      }
-    }
+      return _.contains(tags, self._tag);
+    });
 
-    var filteredTagData = [];
+    // filter tag posts by user_id = this._userId
+    var filteredTagData = _.filter(this._tagData, function(post) {
+      console.log(post.user.id, self._userId);
+      return post.user.id == self._userId;
+    });
 
-    for (var i = 0; i < this._tagData.length; i++) {
-      var post = this._tagData[i];
-      var id = post.user.id;
-      if (id == this._userId) {
-        filteredTagData.push(post);
-      }
-    }
-
-    var finalData = filteredUserData.slice(0);
-
-    // loop the the result of that stuff ^^^ and filter out duplicates
+    var finalData = filteredUserData;
 
     for (var i = 0; i < filteredTagData.length; i++) {
       var tagId = filteredTagData[i].id;
-      var match = false;
-      for (var j = 0; j < filteredUserData.length; j++) {
-        var userId = filteredUserData[j].id;
-        if (userId == tagId) {
-          match = true
-          break;
-        }
-      }
-      if (!match) {
+      var match = _.map(filteredUserData, function(post) {
+        return post.id == tagId;
+      });
+      if (_.contains(match, 'false')) {
         finalData.push(filteredTagData[i]);
       }
     }
@@ -161,16 +143,13 @@ InstagramQuery.prototype = {
     })
   },
 
-  extractCommentTagsFromPost: function(post) {
+  extractTagsFromCommentsInPost: function(post) {
     var comments = post.comments.data;
     var tags = [];
     for (var i = 0; i < comments.length; i++) {
       var t = comments[i].text.match(/#\w+/g);
       if (t && t.length) {
-        var a = [];
-        for (var j = 0; j < t.length; j++) {
-          a.push(t[j].replace('#', ''));
-        }
+        var a = _.map(t, function(r) { return r.replace('#', ''); });
         tags = tags.concat(a);
       }
     }
@@ -178,15 +157,8 @@ InstagramQuery.prototype = {
     return this.sanitizeArr(tags);
   },
 
-  sanitizeArr: function(tags) {
-    var t = [];
-    for (var i = 0; i < tags.length; i++) {
-      if (tags[i]) {
-        t.push(tags[i]);
-      }
-    }
-
-    return t;
+  sanitizeArr: function(arr) {
+    return _.filter(arr, function(a) { return a !== null; });
   },
 
   instagramTagUrl: function() {
