@@ -37,10 +37,7 @@ InstagramQuery.prototype = {
 
     // filter user posts by tag == this._tag
     var filteredUserData = _.filter(this._userData, function(post) {
-      var tags = post.tags;
-      tags = tags.concat(self.extractTagsFromCommentsInPost(post));
-      tags = _.uniq(tags);
-      return _.contains(tags, self._tag);
+      return _.contains(post.tags, self._tag);
     });
 
     // filter tag posts by user_id = this._userId
@@ -147,6 +144,7 @@ InstagramQuery.prototype = {
     })
   },
 
+  // unused
   extractTagsFromCommentsInPost: function(post) {
     var comments = post.comments.data;
     var tags = [];
