@@ -1,17 +1,24 @@
 $(document).ready(function() {
 
   $('#tag').bind('keydown', function(e) {
-    var val = $(this).val();
+    var $self = $(this);
+    var val = $self.val();
     if (val.length == 1 && val == "#" && e.keyCode == 8) {
-      $(this).val('##');
+      $self.val('##');
     }
     if (val.length == 0) {
-      $(this).val('#');
+      $self.val('#');
+    }
+    if (val.charAt(0) !== "#") {
+      var newStr = "#" + val;
+      $self.val(newStr);
     }
   });
 
   $('#tag').bind('keyup', function() {
-    if ($(this).val().length === 0) {
+    var $self = $(this);
+    var val = $self.val();
+    if (val.length === 0) {
       $(this).val('#');
     }
   });
@@ -19,7 +26,7 @@ $(document).ready(function() {
   $('#submit').bind('click', function() {
     $('#images').empty();
 
-    var tag = $('#tag').val();
+    var tag = $('#tag').val().replace('#', '');
     var username = $('#username').val();
 
     var success = function(obj) {
