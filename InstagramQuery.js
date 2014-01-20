@@ -16,7 +16,7 @@ function InstagramQuery(username, tag, limit, success) {
 InstagramQuery.prototype = {
   fetchData: function() {
     this.getUserFeed();
-    this.getTagFeed();
+    this.getTagFeed(this.instagramTagUrl());
   },
 
   checkIfFetchIsDone: function() {
@@ -34,7 +34,6 @@ InstagramQuery.prototype = {
 
     var filteredUserData = [];
 
-    console.log(this._userData.length);
     for (var i = 0; i < this._userData.length; i++) {
       var post = this._userData[i];
       var tags = post.tags;
@@ -82,6 +81,8 @@ InstagramQuery.prototype = {
     this._postsFilteredByTag = finalData;
     this._hasPostsFilteredByTag = true;
 
+    this._userData = [];
+    this._tagData = [];
     if (this._success)
       this._success(this);
   },
@@ -141,18 +142,21 @@ InstagramQuery.prototype = {
     })
   },
 
-  getTagFeed: function(tag) {
-    tag = tag || this._tag;
+  getTagFeed: function(url) {
     var self = this;
 
     $.ajax({
-      url: self.instagramTagUrl(),
+      url: url,
       type: "get",
       dataType: "jsonp",
       success: function(response) {
-        self._tagData = response.data;
-        self._checkIdx++;
-        self.checkIfFetchIsDone();
+        self._tagData = self._tagData.concat(response.data);
+        if (response.pagination.next_url) {
+          self.getTagFeed(response.pagination.next_url);
+        } else {
+          self._checkIdx++;
+          self.checkIfFetchIsDone();
+        }
       },
       fail: function(response) {
       }
