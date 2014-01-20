@@ -1,5 +1,6 @@
 $(document).ready(function() {
   $('#tag').bind('keyup', function(e) {
+    if (e.keyCode === 91) return;
     $(this).val("#" + $(this).val().replace(/#| /g, ''));
   });
 
