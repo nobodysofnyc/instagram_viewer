@@ -37,6 +37,8 @@ InstagramQuery.prototype = {
     for (var i = 0; i < this._userData.length; i++) {
       var post = this._userData[i];
       var tags = post.tags;
+      tags = tags.concat(this.getTagsFromPost(post));
+      tags = $.unique(tags);
       if (tags.length > 0) {
         for (var j = 0; j < tags.length; j++) {
           if (tags[j] == this._tag) {
@@ -151,6 +153,34 @@ InstagramQuery.prototype = {
       fail: function(response) {
       }
     })
+  },
+
+  getTagsFromPost: function(post) {
+    var comments = post.comments.data;
+    var tags = [];
+    for (var i = 0; i < comments.length; i++) {
+      var t = comments[i].text.match(/#\w+/g);
+      if (t && t.length) {
+        var a = [];
+        for (var j = 0; j < t.length; j++) {
+          a.push(t[j].replace('#', ''));
+        }
+        tags = tags.concat(a);
+      }
+    }
+
+    return this.sanitizeArr(tags);
+  },
+
+  sanitizeArr: function(tags) {
+    var t = [];
+    for (var i = 0; i < tags.length; i++) {
+      if (tags[i]) {
+        t.push(tags[i]);
+      }
+    }
+
+    return t;
   },
 
   instagramTagUrl: function() {
