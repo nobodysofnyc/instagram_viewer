@@ -6,9 +6,9 @@ function InstagramQuery(username, tag, limit, success) {
   this._userId;
   this._username = username || "wjhrdy";
   this._tag = tag || "vscocam";
-  this._hasPostsFilteredByTag = false;
+  this._hasData = false;
   this._success = success;
-  this._postsFilteredByTag;
+  this._postsFilteredByTag = [];
 
   this.fetchData();
 }
@@ -24,22 +24,21 @@ InstagramQuery.prototype = {
       return;
     }
 
+    this._hasData = true;
     this.filterPostsByTag();
   },
 
   filterPostsByTag: function() {
-    if (this._filteredData) {
-      return this._filteredData;
+    if (this._postsFilteredByTag.length) {
+      return this._postsFilteredByTag;
     }
 
     var filteredUserData = [];
 
-    console.log(this._tagData.length);
-
     for (var i = 0; i < this._userData.length; i++) {
       var post = this._userData[i];
       var tags = post.tags;
-      tags = tags.concat(this.getTagsFromPost(post));
+      tags = tags.concat(this.extractCommentTagsFromPost(post));
       tags = _.uniq(tags);
       if (tags.length > 0) {
         for (var j = 0; j < tags.length; j++) {
@@ -81,7 +80,6 @@ InstagramQuery.prototype = {
     }
 
     this._postsFilteredByTag = finalData;
-    this._hasPostsFilteredByTag = true;
 
     this._userData = [];
     this._tagData = [];
@@ -124,7 +122,6 @@ InstagramQuery.prototype = {
 
   getFeedForUser: function(url) {
     var self = this;
-
     $.ajax({
       url: url,
       type: "get",
@@ -132,7 +129,6 @@ InstagramQuery.prototype = {
       success: function(response) {
         self._userData = self._userData.concat(response.data);
         if (response.pagination.next_url && self._userData.length < self._limit) {
-          console.log('fetchin user...');
           self.getFeedForUser(response.pagination.next_url)
         } else {
           self._checkIdx++;
@@ -154,7 +150,6 @@ InstagramQuery.prototype = {
       success: function(response) {
         self._tagData = self._tagData.concat(response.data);
         if (response.pagination.next_url && self._tagData.length < self._limit) {
-          console.log('fetchin tag...');
           self.getTagFeed(response.pagination.next_url);
         } else {
           self._checkIdx++;
@@ -166,7 +161,7 @@ InstagramQuery.prototype = {
     })
   },
 
-  getTagsFromPost: function(post) {
+  extractCommentTagsFromPost: function(post) {
     var comments = post.comments.data;
     var tags = [];
     for (var i = 0; i < comments.length; i++) {

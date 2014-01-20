@@ -1,8 +1,22 @@
+function doThisWhenDone(obj) {
+  for (var i = 0; i < obj._postsFilteredByTag.length; i++) {
+    var post = obj._postsFilteredByTag[i];
+    var src = post.images.standard_resolution.url;
+    var img = $('<img data-id="'+ post.id +'" class="insta-image" src="' + src + '">');
+    $('#images').append(img);
+  }
+}
+
+function ensureHashTag($elem, e) {
+  var k = e.keyCode;
+  if (k === 91 || k === 37 || k == 38 || k == 39 || k == 40 || k == 9) return;
+  $elem.val("#" + $elem.val().replace(/#| /g, ''));
+}
+
 $(document).ready(function() {
+
   $('#tag').bind('keyup', function(e) {
-    var k = e.keyCode;
-    if (k === 91 || k === 37 || k == 38 || k == 39 || k == 40 || k == 9) return;
-    $(this).val("#" + $(this).val().replace(/#| /g, ''));
+    ensureHashTag($(this), e);
   });
 
   $('#submit').bind('click', function() {
@@ -12,14 +26,8 @@ $(document).ready(function() {
     var username = $('#username').val();
 
     var success = function(obj) {
-      for (var i = 0; i < obj._postsFilteredByTag.length; i++) {
-        var post = obj._postsFilteredByTag[i];
-        var src = post.images.standard_resolution.url;
-        var img = $('<img data-id="'+ post.id +'" class="insta-image" src="' + src + '">');
-        $('#images').append(img);
-      }
+      doThisWhenDone(obj);
     }
-
     // new InstagramQuery(username, tag, limit, success)
     var query = new InstagramQuery(username, tag, 100, success);
   });
