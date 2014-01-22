@@ -4,6 +4,7 @@ function InstagramSlideshow(obj) {
   this.windowWidth = this.$window.width();
   this.windowHeight = this.$window.height();
   this.init();
+  this.bindEvents();
 }
 
 InstagramSlideshow.prototype = {
@@ -45,5 +46,20 @@ InstagramSlideshow.prototype = {
 
   randomColor: function() {
     return Math.floor(Math.random() * 256);
+  },
+
+  bindEvents: function() {
+    var $posts = $('.post');
+    this.$window.bind('resize.slideshow', function() {
+      var width = $(this).width();
+      var height = $(this).height();
+      $posts.each(function(idx) {
+        $(this).css({
+          'width' : width,
+          'left' : idx * width,
+          'height' : height
+        });
+      });
+    });
   }
 };

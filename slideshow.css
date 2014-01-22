@@ -17,3 +17,7 @@
   display: table-cell;
   vertical-align: middle;
 }
+
+.post-image img {
+  width: 100%;
+}
