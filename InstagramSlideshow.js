@@ -1,9 +1,11 @@
 function InstagramSlideshow(obj) {
-  console.log(obj);
-  this.posts = obj._postsFilteredByTag;
-  this.$window = $(window);
-  this.windowWidth = this.$window.width();
-  this.windowHeight = this.$window.height();
+  this._posts = obj._postsFilteredByTag;
+  this._postsCount = this._posts.length;
+  this._$window = $(window);
+  this._windowWidth = this._$window.width();
+  this._windowHeight = this._$window.height();
+
+  console.log(this._postsCount);
   this.init();
   this.bindEvents();
 }
@@ -15,13 +17,13 @@ InstagramSlideshow.prototype = {
     var $body = $('body');
 
     // loop through all posts and create a slideshow
-    for (var i = 0; i < this.posts.length; i++) {
+    for (var i = 0; i < this._posts.length; i++) {
 
       // get the current post (posts[i])
-      var post = this.posts[i];
+      var post = this._posts[i];
 
       // calculate the left for the current slideshow post
-      var left = this.windowWidth * i;
+      var left = this._windowWidth * i;
 
       // get the data for our post and create an <img> element with said data
       var src = post.images.standard_resolution.url;
@@ -46,8 +48,8 @@ InstagramSlideshow.prototype = {
       // set some dynamic styles on the post div
       $post.css({
         'left' : left,
-        'width' : this.windowWidth,
-        'height' : this.windowHeight,
+        'width' : this._windowWidth,
+        'height' : this._windowHeight,
         'background-color' : this.randomRGBA(0.5)
       });
 
@@ -72,7 +74,7 @@ InstagramSlideshow.prototype = {
 
   bindEvents: function() {
     var $posts = $('.post');
-    this.$window.bind('resize.slideshow', function() {
+    this._$window.bind('resize.slideshow', function() {
       var width = $(this).width();
       var height = $(this).height();
       $posts.each(function(idx) {
