@@ -1,7 +1,10 @@
 function ensureHashTag($elem, e) {
   var k = e.keyCode;
-  if (k === 91 || k === 37 || k == 38 || k == 39 || k == 40 || k == 9) return;
-  $elem.val("#" + $elem.val().replace(/#| /g, ''));
+  if (k == 91 || k == 37 || k == 38 || k == 39 || k == 40 || k == 9) {
+    return;
+  } else {
+    $elem.val("#" + $elem.val().replace(/#| /g, ''));
+  }
 }
 
 $(document).ready(function() {

@@ -1,4 +1,5 @@
 function InstagramSlideshow(obj) {
+  console.log(obj);
   this.posts = obj._postsFilteredByTag;
   this.$window = $(window);
   this.windowWidth = this.$window.width();
