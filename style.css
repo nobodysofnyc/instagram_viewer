@@ -1,26 +1,29 @@
 html, body {
-  background-color: #191F24;
+  background-color: #202427;
   -webkit-font-smoothing: antialiased;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
 }
 
 input.hastag {
-  width: 33%;
   padding-top: 2px;
+  width: 33%;
+  float: left;
 }
 
 input.username {
   padding-top: 2px;
   max-width: 33%;
+  float: left;
 }
 
 input {
   background: none;
   border: none;
-  color: rgba(255,255,255,0.4);
-  font-size: 15px;
-  font-family: 'Source Code Pro', sans-serif;
+  color: rgba(255,255,255,0.6);
+  font-family: 'Alegreya', serif;
+  font-size: 20px;
   font-weight: 300;
+  -webkit-font-smoothing: antialiased;
 }
 
 input:focus {
@@ -39,17 +42,16 @@ button:focus {
 }
 
 #inside {
-  padding: 2px 0px;
-  border-bottom: 4px solid #fff;
-  margin: 0 10px;
+  padding: 4px 18px;
 }
 
 #search {
   margin: 0 auto;
-  margin-top: 20px;
-  border-radius: 20px;
-  height: 40px;
+  margin-top: 23px;
+  border-radius: 23px;
+  height: 45px;
   max-width: 400px;
+  background-color: rgba(9, 11, 12, 0.4);
 }
 
 #images {
@@ -72,15 +74,16 @@ button:focus {
 .btn {
   border: none;
   background: none;
-  border-radius: 8px;
-  padding: 8px 0px;
-  font-family: 'Source Code Pro', sans-serif;
+  font-family: 'Duru Sans', sans-serif;
   font-weight: 700;
   font-size: 14px;
   text-transform: uppercase;
   color: rgba(145,184,206,0.5);
   letter-spacing: 1px;
   cursor: pointer;
+  float: right;
+  padding-top: 8px;
+  -webkit-font-smoothing: antialiased;
 }
 
 .btn:hover {

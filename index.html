@@ -2,7 +2,7 @@
 
 <html lang="en">
 <head>
-  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Source+Code+Pro:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Duru+Sans|Alegreya' rel='stylesheet' type='text/css'>
   <meta charset="utf-8">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   <script src="underscore.js"></script>
@@ -18,12 +18,14 @@
 
   <div id ="search">
     <div id="inside">
-      <input type ="text" class="username" id="username" placeholder="wjhrdy">
-      <input type="text" class="hastag" id="tag" value="#vscocam">
+      <input type="text" class="username" id="username" value="wjhrdy" onfocus="if (this.value == 'wjhrdy') {this.value = '';}">
+      <input type="text" class="hastag" id="tag" value="#vscocam" onfocus="if (this.value == '#vscocam') {this.value = '#';}">
       <button type="submit" class="btn" id='submit'>Search</button>
     </div>
   </div>
 
+  <div class="right">&rarr;</div>
+  <div class="left">&larr;</div>
   <div id="images"></div>
 
 </body>
