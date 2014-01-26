@@ -5,16 +5,14 @@
   <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Source+Code+Pro:700' rel='stylesheet' type='text/css'>
   <meta charset="utf-8">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-  <script src="underscore.js"></script>
+  <script src="underscore-min.js"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEZGMyMJOrBTktd5sPgSvWIbR_C-4s67w&sensor=false"> </script>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="slideshow.css">
   <title>Photo Map</title>
 </head>
 
 <body>
-  <script src="InstagramQuery.js"></script>
-  <script src="InstagramSlideshow.js"></script>
-  <script src="script.js"></script>
 
   <div id ="search">
     <div id="inside">
@@ -24,7 +22,17 @@
     </div>
   </div>
 
-  <div id="images"></div>
+  <div id="posts"></div>
+
+  <div id="map-container">
+    <div id="map">
+    </div>
+  </div>
+
+  <script src="InstagramQuery.js"></script>
+  <script src="InstagramSlideshow.js"></script>
+  <script src="Map.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>

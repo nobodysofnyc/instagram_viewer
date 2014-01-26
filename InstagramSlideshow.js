@@ -1,11 +1,11 @@
 function InstagramSlideshow(obj) {
   this._posts = obj._postsFilteredByTag;
   this._postsCount = this._posts.length;
+  this._idx = 0;
   this._$window = $(window);
   this._windowWidth = this._$window.width();
   this._windowHeight = this._$window.height();
 
-  console.log(this._postsCount);
   this.init();
   this.bindEvents();
 }
@@ -14,7 +14,7 @@ InstagramSlideshow.prototype = {
   init: function() {
 
     // cache the body selector
-    var $body = $('body');
+    var $posts = $('#posts');
 
     // loop through all posts and create a slideshow
     for (var i = 0; i < this._posts.length; i++) {
@@ -49,30 +49,45 @@ InstagramSlideshow.prototype = {
       $post.css({
         'left' : left,
         'width' : this._windowWidth,
-        'height' : this._windowHeight,
-        'background-color' : this.randomRGBA(0.5)
+        'height' : this._windowHeight
       });
 
       // append this post to the body
-      $body.append($post);
+      $posts.append($post);
     }
   },
 
-  // returns a random generated rgba
-  randomRGBA: function(alpha) {
-    alpha = alpha || 1;
-    var c1 = this.randomColor();
-    var c2 = this.randomColor();
-    var c3 = this.randomColor();
-    return 'rgba('+c1+','+c2+','+c3+','+alpha+')';
+  nextPost: function() {
+    this._idx++;
+
+    if (this._idx > this._postsCount - 1) {
+      this._idx = 0;
+    }
+
+    this.seekToPost();
   },
 
-  // returns a random number from 0 - 255
-  randomColor: function() {
-    return Math.floor(Math.random() * 255);
+  previousPost: function() {
+    this._idx--;
+
+    if (this._idx < 0) {
+      this._idx = this._postsCount - 1;
+    }
+
+    this.seekToPost();
+  },
+
+  seekToPost: function() {
+    var $posts = $('.post');
+    $posts.each(function(idx, post) {
+      var left = parseInt($(post).css('left').replace('px', ''), 10);
+      console.log(left);
+    });
   },
 
   bindEvents: function() {
+    var slideshow = this;
+
     var $posts = $('.post');
     this._$window.bind('resize.slideshow', function() {
       var width = $(this).width();
@@ -84,6 +99,14 @@ InstagramSlideshow.prototype = {
           'height' : height
         });
       });
+    });
+
+    $(document).bind('keyup', function(e) {
+      if (e.keyCode === 37) {
+        slideshow.previousPost();
+      } else if (e.keyCode === 39) {
+        slideshow.nextPost();
+      }
     });
   }
 };
