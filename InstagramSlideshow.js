@@ -17,6 +17,8 @@ InstagramSlideshow.prototype = {
     // cache the body selector
     var $posts = $('#posts');
 
+    var posts = [];
+
     // loop through all posts and create a slideshow
     for (var i = 0; i < this._posts.length; i++) {
 
@@ -59,8 +61,10 @@ InstagramSlideshow.prototype = {
 
       // append this post to the body
       $posts.append($post);
+      posts.push(post);
     }
 
+    this._posts = posts;
     this._map.initWithPosts(this._posts, this);
   },
 
