@@ -1,10 +1,11 @@
-function InstagramSlideshow(obj) {
+function InstagramSlideshow(obj, map) {
   this._posts = obj._postsFilteredByTag;
   this._postsCount = this._posts.length;
   this._idx = 0;
   this._$window = $(window);
   this._windowWidth = this._$window.width();
   this._windowHeight = this._$window.height();
+  this._map = map;
 
   this.init();
   this.bindEvents();
@@ -22,6 +23,8 @@ InstagramSlideshow.prototype = {
       // get the current post (posts[i])
       var post = this._posts[i];
 
+      if (!this.postHasLocation(post)) continue;
+
       // calculate the left for the current slideshow post
       var left = this._windowWidth * i;
 
@@ -33,6 +36,7 @@ InstagramSlideshow.prototype = {
 
       // create a few empty divs
       var $post = $('<div class="post"></div>');
+      var $postBg = $('<div class="post-bg"></div>');
       var $container = $('<div class="post-image-container"></div>');
       var $postImg = $('<div class="post-image"></div>');
 
@@ -44,6 +48,7 @@ InstagramSlideshow.prototype = {
 
       // ad the post-image-container div to the post div
       $post.html($container);
+      $post.prepend($postBg);
 
       // set some dynamic styles on the post div
       $post.css({
@@ -55,6 +60,8 @@ InstagramSlideshow.prototype = {
       // append this post to the body
       $posts.append($post);
     }
+
+    this._map.initWithPosts(this._posts, this);
   },
 
   nextPost: function() {
@@ -77,12 +84,55 @@ InstagramSlideshow.prototype = {
     this.seekToPost();
   },
 
-  seekToPost: function() {
+  seekToPost: function(idx) {
+    var slideshow = this;
+
+    if (typeof idx == "number") {
+      this._idx = idx;
+    }
+
     var $posts = $('.post');
     $posts.each(function(idx, post) {
-      var left = parseInt($(post).css('left').replace('px', ''), 10);
-      console.log(left);
+      var $post = $(post);
+      var left =  - (slideshow._idx * slideshow._windowWidth);
+      $post.css({
+        '-webkit-transform' : 'translate3d('+left+'px, 0px, 0px)'
+      });
     });
+
+    this.seekToLocation(this._posts[this._idx]);
+  },
+
+  seekToLocation: function(post) {
+    this._map.setLocation(post.location);
+  },
+
+  postHasLocation: function(post) {
+    return post.location && post.location.longitude && post.location.latitude;
+  },
+
+  seekToPostForPin: function(marker) {
+    var idx = 0;
+    for (var i = 0; i < this._posts.length; i++) {
+      if (this._posts[i].id === marker.postId) {
+        idx = i;
+        break;
+      }
+    }
+
+    console.log(idx);
+    this.seekToPost(idx);
+    this.showSlideshow();
+  },
+
+  showSlideshow: function() {
+    var $posts = $('#posts');
+    $posts.show();
+  },
+
+  hideSlideshow: function() {
+    var $posts = $('#posts');
+    $posts.hide();
   },
 
   bindEvents: function() {
@@ -99,6 +149,10 @@ InstagramSlideshow.prototype = {
           'height' : height
         });
       });
+    });
+
+    $('#posts').on('click', '.post-bg', function() {
+      slideshow.hideSlideshow();
     });
 
     $(document).bind('keyup', function(e) {

@@ -9,6 +9,19 @@ function ensureHashTag($elem, e) {
 
 $(document).ready(function() {
 
+  var NY = {
+    lat: 40.719729,
+    lng: -73.988549
+  }
+
+  var mapOpts = {
+    center: new google.maps.LatLng(NY.lat, NY.lng),
+    zoom : 7,
+    disableDefaultUI: true
+  };
+
+  var map = new InstagramViewerMap($('#map')[0], mapOpts);
+
   $('#tag').bind('keyup', function(e) {
     ensureHashTag($(this), e);
   });
@@ -20,7 +33,7 @@ $(document).ready(function() {
     var username = $('#username').val();
 
     var success = function(obj) {
-      var slideshow = new InstagramSlideshow(obj);
+      var slideshow = new InstagramSlideshow(obj, map);
     }
     // new InstagramQuery(username, tag, limit, success)
     var query = new InstagramQuery(username, tag, 100, success);
