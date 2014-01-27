@@ -120,7 +120,6 @@ InstagramSlideshow.prototype = {
       }
     }
 
-    console.log(idx);
     this.seekToPost(idx);
     this.showSlideshow();
   },
