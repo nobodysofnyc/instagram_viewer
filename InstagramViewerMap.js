@@ -1,28 +1,26 @@
 function InstagramViewerMap(elem, opts) {
   this._zoom = {
     _low: 5,
-    _high: 16
+    _high: 14
   };
   this._map = new google.maps.Map(elem, opts);
   this._slideshow = null;
-  this._posts = [];
 }
 
 InstagramViewerMap.prototype = {
   initWithPosts: function(posts, slideshow) {
     this._slideshow = slideshow;
-    this._posts = posts;
 
     for (var i = 0; i < posts.length; i++) {
       var post = posts[i];
       this.createMarkerForPost(post);
     }
 
-    this.setInitialLocation();
+    this.setInitialLocation(posts[0]);
   },
 
-  setInitialLocation: function() {
-    this.setLocation(this._posts[0].location);
+  setInitialLocation: function(post) {
+    this.setLocation(post.location);
   },
 
   createMarkerForPost: function(post) {

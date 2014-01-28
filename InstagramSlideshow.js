@@ -129,13 +129,13 @@ InstagramSlideshow.prototype = {
   },
 
   showSlideshow: function() {
-    var $posts = $('#posts');
-    $posts.show();
+    $('#posts').show();
+    $('#map-container').addClass('blur');
   },
 
   hideSlideshow: function() {
-    var $posts = $('#posts');
-    $posts.hide();
+    $('#posts').hide();
+    $('#map-container').removeClass('blur');
   },
 
   bindEvents: function() {

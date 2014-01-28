@@ -16,7 +16,7 @@ $(document).ready(function() {
 
   var mapOpts = {
     center: new google.maps.LatLng(NY.lat, NY.lng),
-    zoom : 7,
+    zoom : 10,
     disableDefaultUI: true
   };
 
