@@ -1,10 +1,11 @@
 function InstagramViewerMap(elem, opts) {
-  this._zoom = {
-    _low: 5,
-    _high: 14
-  };
+  this._zoom = { _low: 5, _high: 14 };
   this._map = new google.maps.Map(elem, opts);
   this._slideshow = null;
+  this._previousLocation = {
+    latitude: opts.center.d,
+    longitude: opts.center.e
+  };
 }
 
 InstagramViewerMap.prototype = {
@@ -55,5 +56,25 @@ InstagramViewerMap.prototype = {
   setLocation: function(location) {
     this._map.setZoom(this._zoom._high);
     this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude));
+    console.log(this.getDiffLocation(location));
+    this._previousLocation = location;
+  },
+
+  getDiffLocation: function(location) {
+    var r = 6371
+    lat1 = this.toRadians(this._previousLocation.latitude);
+    lng1 = this.toRadians(this._previousLocation.longitude);
+    lat2 = this.toRadians(location.latitude);
+    lng2 = this.toRadians(location.longitude)
+
+    d = Math.acos(Math.sin(lat1) * Math.sin(lat2) +
+        Math.cos(lat1) * Math.cos(lat2) *
+        Math.cos(lng2 - lng1)) * r;
+
+    return d;
+  },
+
+  toRadians: function(degrees) {
+    return degrees * (Math.PI / 180.0);
   }
 };
