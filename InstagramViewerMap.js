@@ -1,5 +1,5 @@
 function InstagramViewerMap(elem, opts) {
-  this._zoom = { _low: 5, _high: 14 };
+  this._zoom = { _low: 5, _high: 18 };
   this._map = new google.maps.Map(elem, opts);
   this._slideshow = null;
   this._previousLocation = {
@@ -54,7 +54,13 @@ InstagramViewerMap.prototype = {
   },
 
   setLocation: function(location) {
-    this._map.setZoom(this._zoom._high);
+    var diff = this.getDiffLocation(location);
+    if (diff < 200) {
+      this._map.setZoom(this._zoom._high);
+    } else {
+      this._map.setZoom(this._zoom._low);
+    }
+
     this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude));
     console.log(this.getDiffLocation(location));
     this._previousLocation = location;
