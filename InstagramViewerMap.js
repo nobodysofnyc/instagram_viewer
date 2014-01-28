@@ -54,12 +54,7 @@ InstagramViewerMap.prototype = {
   },
 
   setLocation: function(location) {
-    var diff = this.getDiffLocation(location);
-    if (diff < 200) {
-      this._map.setZoom(this._zoom._high);
-    } else {
-      this._map.setZoom(this._zoom._low);
-    }
+    this._map.setZoom(this._zoom._high);
 
     this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude));
     console.log(this.getDiffLocation(location));
