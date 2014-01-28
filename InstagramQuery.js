@@ -66,8 +66,10 @@ InstagramQuery.prototype = {
     this._userData = [];
     this._tagData = [];
 
-    if (this._success)
-      this._success(this);
+    if (this._postsFilteredByTag.length > 0) {
+      if (this._success)
+        this._success(this);
+    }
   },
 
   getUserFeed: function() {
