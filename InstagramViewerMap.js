@@ -1,5 +1,5 @@
 function InstagramViewerMap(elem, opts) {
-  this._zoom = { _low: 5, _high: 18 };
+  this._zoom = { _low: 5, _high: 17 };
   this._map = new google.maps.Map(elem, opts);
   this._slideshow = null;
   this._previousLocation = {
