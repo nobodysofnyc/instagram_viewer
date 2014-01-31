@@ -12,10 +12,12 @@ InstagramViewerMap.prototype = {
   initWithPosts: function(posts, slideshow) {
     this._slideshow = slideshow;
 
+    /*
     for (var i = 0; i < posts.length; i++) {
       var post = posts[i];
       this.createMarkerForPost(post);
     }
+    */
 
     this.setInitialLocation(posts[0]);
   },
