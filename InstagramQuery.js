@@ -4,8 +4,8 @@ function InstagramQuery(username, tag, limit, success) {
   this._userData = [];
   this._tagData = [];
   this._userId;
-  this._username = username || "mttlmy";
-  this._tag = tag || "honeysmoon";
+  this._username = username || "laura_donohue";
+  this._tag = tag || "margotvisit";
   this._hasData = false;
   this._success = success;
   this._postsFilteredByTag = [];

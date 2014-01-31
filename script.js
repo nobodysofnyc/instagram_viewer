@@ -1,3 +1,5 @@
+var map;
+
 function ensureHashTag($elem, e) {
   var k = e.keyCode;
   if (k == 91 || k == 37 || k == 38 || k == 39 || k == 40 || k == 9) {
@@ -20,7 +22,7 @@ $(document).ready(function() {
     disableDefaultUI: true
   };
 
-  var map = new InstagramViewerMap($('#map')[0], mapOpts);
+  map = new InstagramViewerMap($('#map')[0], mapOpts);
 
   $('#tag').bind('keyup', function(e) {
     ensureHashTag($(this), e);

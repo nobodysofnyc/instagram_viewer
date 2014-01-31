@@ -54,10 +54,14 @@ InstagramViewerMap.prototype = {
   },
 
   setLocation: function(location) {
-    this._map.setZoom(this._zoom._high);
+    // this._map.setZoom(this._zoom._high);
+    // panToBounds(currentLocation, newLocation)
+    // panTo(newLocation)
+    // this._map.setZoom(this._zoom._high);
 
-    this._map.panTo(new google.maps.LatLng(location.latitude, location.longitude));
-    console.log(this.getDiffLocation(location));
+    var diff = this.getDiffLocation(location);
+    var newLatLng = new google.maps.LatLng(location.latitude, location.longitude);
+    this._map.panTo(newLatLng);
     this._previousLocation = location;
   },
 
