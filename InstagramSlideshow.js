@@ -130,12 +130,10 @@ InstagramSlideshow.prototype = {
 
   showSlideshow: function() {
     $('#posts').show();
-    $('#map-container').addClass('blur');
   },
 
   hideSlideshow: function() {
     $('#posts').hide();
-    $('#map-container').removeClass('blur');
   },
 
   bindEvents: function() {
